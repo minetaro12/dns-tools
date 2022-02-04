@@ -3,13 +3,15 @@ const dig = require('node-dig-dns');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8000
+const usagewhois =  'whois: GET /whois/[URL or IP]';
+const usagedig = 'dig: GET /dig/[URL]/[ANY, A, MX, NS, TXT...]';
 
 app.get('/', (req, res) => {
-  res.send('whois: GET /whois/[URL or IP] dig: /dig/[URL]/[TYPE]');
+  res.send(usagewhois + '<br>' + usagedig);
 });
 
 app.get('/whois', (req, res) => {
-  res.send('Usage: GET /whois/[URL or IP]');
+  res.send(usagewhois);
 });
 
 app.get('/whois/:url', (req, res) => {
@@ -25,7 +27,7 @@ app.get('/whois/:url', (req, res) => {
 });
 
 app.get('/dig', (req, res) => {
-  res.send('Usage: GET /dig/[URL]/[ANY, A, MX, NS, TXT...]');
+  res.send(usagedig);
 });
 
 app.get('/dig/:url/:type', (req, res) => {
