@@ -3,6 +3,8 @@ const dig = require('node-dig-dns');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8000
+const usagewhois =  'whois: GET /whois/[URL or IP]';
+const usagedig = 'dig: GET /dig/[URL]/[ANY, A, MX, NS, TXT...]';
 
 app.get('/', (req, res) => {
   res.send('whois: GET /whois?domain=[DOMAIN or IP]<br>dig: GET /dig?domain=[DOMAIN]&type=[TYPE]<br>client: GET /client');
