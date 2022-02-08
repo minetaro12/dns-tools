@@ -3,11 +3,12 @@ const dig = require('node-dig-dns');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8000
-const usagewhois =  'whois: GET /whois/[URL or IP]';
-const usagedig = 'dig: GET /dig/[URL]/[ANY, A, MX, NS, TXT...]';
+const usagewhois =  'whois: GET /whois?domain=[DOMAIN or IP]';
+const usagedig = 'dig: GET /dig?domain=[DOMAIN]&type=[TYPE]';
+const usageclient = 'client: GET /client'
 
 app.get('/', (req, res) => {
-  res.send('whois: GET /whois?domain=[DOMAIN or IP]<br>dig: GET /dig?domain=[DOMAIN]&type=[TYPE]<br>client: GET /client');
+  res.send(usagewhois + '<br>' + usagedig + '<br>' + usageclient);
 });
 
 app.get('/client', (req, res) => {
@@ -16,7 +17,7 @@ app.get('/client', (req, res) => {
 
 app.get('/whois', (req, res) => {
   if (!req.query.domain) {
-    res.send('Usage: GET /whois?domain=[DOMAIN or IP]');
+    res.send(usagewhois);
   } else {
     console.log('whois: ' + req.query.domain);
     try {
@@ -32,9 +33,9 @@ app.get('/whois', (req, res) => {
 
 app.get('/dig', (req, res) => {
   if (!req.query.domain) {
-    res.send('Usage: GET /dig?domain=[DOMAIN]&type=[ANY, A, MX, NS, TXT...]');
+    res.send(usagedig);
   } else {
-    let rectype;
+    let type;
     if(!req.query.type) {
       type = 'any';
     } else {
