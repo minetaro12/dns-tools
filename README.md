@@ -9,7 +9,7 @@
 ## 使い方
 
 ```
-curl localhost:8000/whois/example.com
+curl localhost:8000/whois?domain=example.com
 
-curl localhost:8000/dig/example.com/ns
+curl localhost:8000/dig?domain=example.com&ytype=ns
 ```

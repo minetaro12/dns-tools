@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" http-equiv="content-type" charset="utf-8">
+    <title>DNS Tools</title>
+  </head>
+  <body>
+    <h1>DNS Tools</h1>
+    <h2>WHOIS</h2>
+    <form action="/whois" method="get">
+      <p>DOMAIN:<input type="text" name="domain" placeholder="example.com" required><input type="submit" value="取得"></p>
+    </form>
+    <hr>
+    <h2>DIG</h2>
+    <form action="/dig" method="get">
+      <p>DOMAIN:<input type="text" name="domain" placeholder="example.com" required></p>
+      <p>TYPE:<input type="text" name="type" placeholder="any"><input type="submit" value="取得"></p>
+    </form>
+    <hr>
+    <footer>&copy;2022 minetaro12</footer>
+  </body>
+</html>

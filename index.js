@@ -5,42 +5,52 @@ const app = express();
 const port = process.env.PORT || 8000
 
 app.get('/', (req, res) => {
-  res.send('whois: GET /whois/[URL or IP] dig: /dig/[URL]/[TYPE]');
+  res.send('whois: GET /whois?domain=[DOMAIN or IP]<br>dig: GET /dig?domain=[DOMAIN]&type=[TYPE]<br>client: GET /client');
+});
+
+app.get('/client', (req, res) => {
+  res.sendFile(__dirname + '/public/client.html');
 });
 
 app.get('/whois', (req, res) => {
-  res.send('Usage: GET /whois/[URL or IP]');
-});
-
-app.get('/whois/:url', (req, res) => {
-  console.log('whois: ' + req.params.url);
-  try {
-    whois.lookup(req.params.url, function(err, data) {
-      res.setHeader('Content-Type', 'text/plain');
-      res.send(data);
-    });
-  } catch(e) {
-	  res.status(500).send('Error');
-  }
+  if (!req.query.domain) {
+    res.send('Usage: GET /whois?domain=[DOMAIN or IP]');
+  } else {
+    console.log('whois: ' + req.query.domain);
+    try {
+      whois.lookup(req.query.domain, function(err, data) {
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(data);
+      });
+    } catch(e) {
+	    res.status(500).send('Error');
+    };
+  };
 });
 
 app.get('/dig', (req, res) => {
-  res.send('Usage: GET /dig/[URL]/[ANY, A, MX, NS, TXT...]');
-});
-
-app.get('/dig/:url/:type', (req, res) => {
-  console.log('dig: ' + req.params.url + ' ' + req.params.type);
-  dig(['@1.1.1.1', req.params.url, req.params.type])
+  if (!req.query.domain) {
+    res.send('Usage: GET /dig?domain=[DOMAIN]&type=[ANY, A, MX, NS, TXT...]');
+  } else {
+    let rectype;
+    if(!req.query.type) {
+      type = 'any';
+    } else {
+      type = req.query.type;
+    };
+    console.log('dig: ' + req.query.domain + ' ' + type);
+    dig(['@1.1.1.1', req.query.domain, type])
     .then((result) => {
-      result2 = JSON.stringify(result, null, 1);
+      const ans = JSON.stringify(result, null, 1);
       res.setHeader('Content-Type', 'text/plain');
-      res.send(result2);
+      res.send(ans);
     })
     .catch((err) => {
       res.status(500).send('Error');
     });
-  });
+  };
+});
 
 app.listen(port, () => {
-  console.log('Server listening on port ' + port)
+  console.log('Server listening on port ' + port);
 });
