@@ -11,5 +11,5 @@
 ```
 curl localhost:8000/whois?domain=example.com
 
-curl localhost:8000/dig?domain=example.com&ytype=ns
+curl localhost:8000/dig?domain=example.com&type=ns
 ```
