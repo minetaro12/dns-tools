@@ -11,7 +11,7 @@
       <h1>DNS Tools</h1>
       <div class="card">
         <div class="card-header">
-          WHOIS
+          Whois
         </div>
         <div class="card-body">
           <div class="input-group mb-3">
@@ -24,7 +24,7 @@
       <br>
       <div class="card">
         <div class="card-header">
-          DIG
+          Dig
         </div>
         <div class="card-body">
           <div class="input-group mb-3">
@@ -35,7 +35,7 @@
             <span class="input-group-text">Type</span>
             <input type="text" class="form-control" placeholder="any" name="type" id='digType'>
           </div>
-          <input type="button" class="btn btn-outline-primary" value="取得">
+          <input type="button" class="btn btn-outline-primary" onclick="digSubmit()" value="取得" data-bs-toggle="modal" data-bs-target="#digModal">
         </div>
       </div>
       <hr>
@@ -53,14 +53,28 @@
           <div class="modal-body" id="whoisResult">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
           </div>
         </div>
       </div>
     </div>
 
     <!-- dig modal -->
-
+    <div class="modal fade" id="digModal" tabindex="-1" aria-labelledby="digModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="digModalLabel">Dig</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="digResult">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <script src="/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
