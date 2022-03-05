@@ -5,7 +5,8 @@ const app = express();
 const port = process.env.PORT || 8000
 const usagewhois =  'whois: GET /whois?domain=[DOMAIN or IP]';
 const usagedig = 'dig: GET /dig?domain=[DOMAIN]&type=[TYPE]';
-const usageclient = 'client: GET /client'
+
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/client.html');
