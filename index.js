@@ -8,10 +8,6 @@ const usagedig = 'dig: GET /dig?domain=[DOMAIN]&type=[TYPE]';
 const usageclient = 'client: GET /client'
 
 app.get('/', (req, res) => {
-  res.send(usagewhois + '<br>' + usagedig + '<br>' + usageclient);
-});
-
-app.get('/client', (req, res) => {
   res.sendFile(__dirname + '/public/client.html');
 });
 
