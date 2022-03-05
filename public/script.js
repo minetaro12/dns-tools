@@ -10,6 +10,7 @@ const whoisSubmit = function() {
     whoisResult.innerHTML = 'ドメインを入力してください';
     return;
   };
+  
   const domain = whoisDomain.value;
 
   whoisResult.innerHTML = '<p>Please Wait...<img src="https://www.benricho.org/loading_images/img-transparent/712-24.gif"></p>'
@@ -37,6 +38,7 @@ const digSubmit = function() {
     digResult.innerHTML = 'ドメインを入力してください';
     return;
   };
+
   const domain = digDomain.value;
   let typeQuery;
 
@@ -45,6 +47,8 @@ const digSubmit = function() {
   } else {
     typeQuery = `&type=${digType.value}`;
   };
+
+  digResult.innerHTML = '<p>Please Wait...<img src="https://www.benricho.org/loading_images/img-transparent/712-24.gif"></p>'
 
   fetch(`/dig?domain=${domain}${typeQuery}`)
     .then((res) => {
