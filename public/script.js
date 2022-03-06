@@ -18,8 +18,7 @@ const whoisSubmit = function() {
   fetch(`/whois?domain=${domain}`)
     .then((res) => {
       if (!res.ok) {
-        whoisResult.innerHTML = '<p>Error</p>';
-        return;
+        throw new Error;
       };
       return res.text();
     })
@@ -53,8 +52,7 @@ const digSubmit = function() {
   fetch(`/dig?domain=${domain}${typeQuery}`)
     .then((res) => {
       if (!res.ok) {
-        digResult.innerHTML = '<p>Error</p>';
-        return;
+        throw new Error;
       };
       return res.text();
     })
