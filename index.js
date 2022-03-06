@@ -14,11 +14,12 @@ app.get('/', (req, res) => {
 
 app.get('/whois', (req, res) => {
   if (!req.query.domain) {
-    res.send(usagewhois);
+    res.status(400).send(usagewhois);
   } else {
-    console.log('whois: ' + req.query.domain);
+    const domain = req.query.domain;
+    console.log(`whois: ${domain}`);
     try {
-      whois.lookup(req.query.domain, function(err, data) {
+      whois.lookup(domain, function(err, data) {
         res.setHeader('Content-Type', 'text/plain');
         res.send(data);
       });
@@ -30,16 +31,17 @@ app.get('/whois', (req, res) => {
 
 app.get('/dig', (req, res) => {
   if (!req.query.domain) {
-    res.send(usagedig);
+    res.status(400).send(usagedig);
   } else {
+    const domain = req.query.domain;
     let type;
     if(!req.query.type) {
       type = 'any';
     } else {
       type = req.query.type;
     };
-    console.log('dig: ' + req.query.domain + ' ' + type);
-    dig(['@1.1.1.1', req.query.domain, type])
+    console.log(`dig: ${domain} ${type}`);
+    dig(['@1.1.1.1', domain, type])
     .then((result) => {
       const ans = JSON.stringify(result, null, 1);
       res.setHeader('Content-Type', 'text/plain');
