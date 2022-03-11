@@ -5,6 +5,8 @@ const digType = document.getElementById('digType');
 const whoisResult = document.getElementById('whoisResult');
 const digResult =document.getElementById('digResult');
 
+const waitHtml = '<p>Please Wait...<span class="spinner-border text-primary" role="status"></span></p>';
+
 const whoisSubmit = function() {
   if (!whoisDomain.value) {
     whoisResult.innerHTML = 'ドメインを入力してください';
@@ -13,7 +15,7 @@ const whoisSubmit = function() {
   
   const domain = whoisDomain.value;
 
-  whoisResult.innerHTML = '<p>Please Wait...<img src="https://www.benricho.org/loading_images/img-transparent/712-24.gif"></p>'
+  whoisResult.innerHTML = waitHtml;
 
   fetch(`/whois?domain=${domain}`)
     .then((res) => {
@@ -47,7 +49,7 @@ const digSubmit = function() {
     typeQuery = `&type=${digType.value}`;
   };
 
-  digResult.innerHTML = '<p>Please Wait...<img src="https://www.benricho.org/loading_images/img-transparent/712-24.gif"></p>'
+  digResult.innerHTML = waitHtml;
 
   fetch(`/dig?domain=${domain}${typeQuery}`)
     .then((res) => {
