@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "date-utils": "^1.2.21",
-    "express": "^4.17.2",
+    "express": "^4.17.3",
     "node-dig-dns": "^0.3.2",
     "whois": "^2.13.9"
   }
