@@ -1,69 +1,63 @@
-const whoisDomain = document.getElementById('whoisDomain');
-const digDomain = document.getElementById('digDomain');
-const digType = document.getElementById('digType');
+const { createApp } = Vue
 
-const whoisResult = document.getElementById('whoisResult');
-const digResult =document.getElementById('digResult');
-
-const waitHtml = '<p>Please Wait...<span class="spinner-border text-primary" role="status"></span></p>';
-
-const whoisSubmit = function() {
-  if (!whoisDomain.value) {
-    whoisResult.innerHTML = 'ドメインを入力してください';
-    return;
-  };
-  
-  const domain = whoisDomain.value;
-
-  whoisResult.innerHTML = waitHtml;
-
-  fetch(`/whois?domain=${domain}`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error;
-      };
-      return res.text();
-    })
-    .then((text) => {
-      whoisResult.innerHTML = `<pre>${text}</pre>`;
-      return
-    })
-    .catch((error) => {
-      whoisResult.innerHTML = '<p>Error</p>';
-      return;
-    });
-};
-
-const digSubmit = function() {
-  if (!digDomain.value) {
-    digResult.innerHTML = 'ドメインを入力してください';
-    return;
-  };
-
-  const domain = digDomain.value;
-  let typeQuery;
-
-  if (!digType.value) {
-    typeQuery = '&type=any';
-  } else {
-    typeQuery = `&type=${digType.value}`;
-  };
-
-  digResult.innerHTML = waitHtml;
-
-  fetch(`/dig?domain=${domain}${typeQuery}`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error;
-      };
-      return res.text();
-    })
-    .then((text) => {
-      digResult.innerHTML = `<pre>${text}</pre>`;
-      return;
-    })
-    .catch((error) => {
-      digResult.innerHTML = '<p>Error</p>';
-      return;
-    });
-};
+createApp({
+  data() {
+    return {
+      result: "",
+      whoisDomain: "",
+      digDns: "",
+      digDomain: "",
+      digType: "A"
+    }
+  },
+  methods: {
+    whoisSubmit() {
+      this.result = "Please wait..."
+      const fd = new FormData()
+      fd.append("domain", this.whoisDomain)
+      fetch("/whois/", {
+        method: "POST",
+        body: fd
+      })
+      .then((res) => {
+        if(!res.ok) {
+          throw new Error
+        }
+        return res.text()
+      })
+      .then((text) => {
+        this.result = text
+        return
+      })
+      .catch((error) =>{
+        this.result = "Error"
+        return
+      })
+    },
+    digSubmit() {
+      this.result = "Please wait..."
+      const fd = new FormData()
+      fd.append("dns", this.digDns)
+      fd.append("domain", this.digDomain)
+      fd.append("type", this.digType)
+      fetch("/dig/", {
+        method: "POST",
+        body: fd
+      })
+      .then((res) => {
+        if(!res.ok) {
+          throw new Error
+        }
+        return res.text()
+      })
+      .then((text) => {
+        this.result = text
+        return
+      })
+      .catch((error) => {
+        this.result = "Error"
+        return
+      })
+    }
+  }
+}).mount('#app')

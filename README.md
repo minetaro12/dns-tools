@@ -1,15 +1,19 @@
 # dns-tools
 
-`yarn install` 依存関係のインストール
+```
+#ビルド
+$ go build
 
-`yarn start` ポート8000で起動
+#実行
+$ ./dns-tools
 
-`PORT=9000 yarn start` ポート9000で起動
+$ PORT=8080 ./dns-tools
+```
 
 ## 使い方
 
 ```
-curl localhost:8000/whois?domain=example.com
+$ curl localhost:8000/whois/ -X POST --form "domain=0sn.net"
 
-curl localhost:8000/dig?domain=example.com&type=ns
+$ curl localhost:8000/dig/ -X POST --form "domain=example.com" --form "type=a" --form "dns=1.1.1.1"
 ```

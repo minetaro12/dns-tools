@@ -1,17 +1,13 @@
-FROM node:lts-alpine
+FROM golang:1.19.5 AS builder
 
-WORKDIR /server
+WORKDIR /work
+COPY . ./
+RUN CGO_ENABLED=0 go build
 
-#ファイルのコピー
-COPY ./index.js /server/
-COPY ./package.json /server/
-COPY ./yarn.lock /server/
-COPY ./public/ /server/public/
+FROM gcr.io/distroless/static:latest
+WORKDIR /app
+COPY --from=builder /work/dns-tools /app
 
-#依存関係のインストール
-RUN apk add --no-cache bind-tools && \
-    yarn install && \
-    yarn cache clean && \
-    rm -rf /root/.npm
+EXPOSE 8000
 
-CMD /usr/local/bin/yarn start
+CMD ["/app/dns-tools"]
