@@ -23,28 +23,28 @@ func digHandle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func execDig(digDns, digType, domain string) (*dns.Msg, error) {
+func execDig(reqDns, reqType, domain string) (*dns.Msg, error) {
 	var d dnsutil.Dig
-	if digDns == "" {
+	if reqDns == "" {
 		d.SetDNS("8.8.8.8")
 	} else {
-		d.SetDNS(digDns)
+		d.SetDNS(reqDns)
 	}
 
 	var r *dns.Msg
 	var err error
 	switch {
-	case matchString("A", digType):
+	case matchString("A", reqType):
 		r, err = d.GetMsg(dns.TypeA, domain)
-	case matchString("AAAA", digType):
+	case matchString("AAAA", reqType):
 		r, err = d.GetMsg(dns.TypeAAAA, domain)
-	case matchString("CNAME", digType):
+	case matchString("CNAME", reqType):
 		r, err = d.GetMsg(dns.TypeCNAME, domain)
-	case matchString("MX", digType):
+	case matchString("MX", reqType):
 		r, err = d.GetMsg(dns.TypeMX, domain)
-	case matchString("TXT", digType):
+	case matchString("TXT", reqType):
 		r, err = d.GetMsg(dns.TypeTXT, domain)
-	case matchString("NS", digType):
+	case matchString("NS", reqType):
 		r, err = d.GetMsg(dns.TypeNS, domain)
 	default:
 		r, err = d.GetMsg(dns.TypeANY, domain)
