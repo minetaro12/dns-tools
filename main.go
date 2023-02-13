@@ -22,6 +22,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.FS(public)))
 	http.HandleFunc("/whois/", whoisHandle)
 	http.HandleFunc("/dig/", digHandle)
+	http.HandleFunc("/nslookup/", nslookupHandle)
 	log.Println("Server Listening on", httpListen)
 	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
 }

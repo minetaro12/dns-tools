@@ -4,7 +4,8 @@ WORKDIR /work
 COPY . ./
 RUN CGO_ENABLED=0 go build
 
-FROM gcr.io/distroless/static:latest
+FROM alpine:3.17.2
+RUN apk add --no-cache bind-tools
 WORKDIR /app
 COPY --from=builder /work/dns-tools /app
 
