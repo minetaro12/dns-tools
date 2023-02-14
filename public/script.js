@@ -5,17 +5,23 @@ createApp({
     return {
       result: "",
       whoisDomain: "",
-      digDns: "",
-      digDomain: "",
-      digType: "A"
+      qDns: "",
+      qDomain: "",
+      qType: "A"
     }
   },
   methods: {
-    whoisSubmit() {
+    submit(m) {
       this.result = "Please wait..."
       const fd = new FormData()
-      fd.append("domain", this.whoisDomain)
-      fetch("/whois/", {
+      if(m == "whois") {
+        fd.append("domain", this.whoisDomain)
+      } else {
+        fd.append("domain", this.qDomain)
+        fd.append("dns", this.qDns)
+        fd.append("type", this.qType)
+      }
+      fetch("/" + m + "/", {
         method: "POST",
         body: fd
       })
@@ -30,56 +36,6 @@ createApp({
         return
       })
       .catch((error) =>{
-        this.result = "Error"
-        return
-      })
-    },
-    digSubmit() {
-      this.result = "Please wait..."
-      const fd = new FormData()
-      fd.append("dns", this.digDns)
-      fd.append("domain", this.digDomain)
-      fd.append("type", this.digType)
-      fetch("/dig/", {
-        method: "POST",
-        body: fd
-      })
-      .then((res) => {
-        if(!res.ok) {
-          throw new Error
-        }
-        return res.text()
-      })
-      .then((text) => {
-        this.result = text
-        return
-      })
-      .catch((error) => {
-        this.result = "Error"
-        return
-      })
-    },
-    nslookupSubmit() {
-      this.result = "Please wait..."
-      const fd = new FormData()
-      fd.append("dns", this.digDns)
-      fd.append("domain", this.digDomain)
-      fd.append("type", this.digType)
-      fetch("/nslookup/", {
-        method: "POST",
-        body: fd
-      })
-      .then((res) => {
-        if(!res.ok) {
-          throw new Error
-        }
-        return res.text()
-      })
-      .then((text) => {
-        this.result = text
-        return
-      })
-      .catch((error) => {
         this.result = "Error"
         return
       })

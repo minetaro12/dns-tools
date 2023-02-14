@@ -32,7 +32,7 @@
           <label class="form-label" for="whois-domain">Domain or IP</label>
           <input type="text" class="form-control" id="whois-domain" v-model="whoisDomain" placeholder="example.com">
           <button type="button" class="btn btn-outline-primary mt-3" data-bs-toggle="modal" data-bs-target="#Modal"
-            @click="whoisSubmit">
+            @click="submit('whois')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
               viewBox="0 0 16 16">
               <path
@@ -47,11 +47,11 @@
         <div class="card-header">Query</div>
         <div class="card-body">
           <label class="form-label" for="dig-dns">DNS</label>
-          <input type="text" class="form-control" id="dig-dns" v-model="digDns" placeholder="8.8.8.8">
+          <input type="text" class="form-control" id="dig-dns" v-model="qDns" placeholder="8.8.8.8">
           <label class="form-label" for="dig-domain">Domain</label>
-          <input type="text" class="form-control" id="dig-domain" v-model="digDomain" placeholder="example.com">
+          <input type="text" class="form-control" id="dig-domain" v-model="qDomain" placeholder="example.com">
           <label class="form-label" for="dig-type">Type</label>
-          <select v-model="digType" class="form-select">
+          <select v-model="qType" class="form-select">
             <option value="A">A</option>
             <option value="AAAA">AAAA</option>
             <option value="ANY">ANY</option>
@@ -61,7 +61,7 @@
             <option value="TXT">TXT</option>
           </select>
           <button type="button" class="btn btn-outline-primary mt-3 mx-1" data-bs-toggle="modal" data-bs-target="#Modal"
-            @click="digSubmit">
+            @click="submit('dig')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
               viewBox="0 0 16 16">
               <path
@@ -70,7 +70,7 @@
             dig
           </button>
           <button type="button" class="btn btn-outline-primary mt-3 mx-1" data-bs-toggle="modal" data-bs-target="#Modal"
-            @click="nslookupSubmit">
+            @click="submit('nslookup')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
               viewBox="0 0 16 16">
               <path
