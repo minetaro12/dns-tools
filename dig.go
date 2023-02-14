@@ -3,10 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"regexp"
-
-	"github.com/lixiangzhong/dnsutil"
-	"github.com/miekg/dns"
+	"os/exec"
 )
 
 func digHandle(w http.ResponseWriter, r *http.Request) {
@@ -23,40 +20,23 @@ func digHandle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func execDig(reqDns, reqType, domain string) (*dns.Msg, error) {
-	var d dnsutil.Dig
+func execDig(reqDns, reqType, domain string) (string, error) {
+	var digDns, digType string
 	if reqDns == "" {
-		d.SetDNS("8.8.8.8")
+		digDns = "8.8.8.8"
 	} else {
-		d.SetDNS(reqDns)
+		digDns = reqDns
 	}
 
-	var r *dns.Msg
-	var err error
-	switch {
-	case matchString("A", reqType):
-		r, err = d.GetMsg(dns.TypeA, domain)
-	case matchString("AAAA", reqType):
-		r, err = d.GetMsg(dns.TypeAAAA, domain)
-	case matchString("CNAME", reqType):
-		r, err = d.GetMsg(dns.TypeCNAME, domain)
-	case matchString("MX", reqType):
-		r, err = d.GetMsg(dns.TypeMX, domain)
-	case matchString("TXT", reqType):
-		r, err = d.GetMsg(dns.TypeTXT, domain)
-	case matchString("NS", reqType):
-		r, err = d.GetMsg(dns.TypeNS, domain)
-	default:
-		r, err = d.GetMsg(dns.TypeANY, domain)
+	if reqType == "" {
+		digType = "A"
+	} else {
+		digType = reqType
 	}
 
+	r, err := exec.Command("dig", domain, "@"+digDns, digType).Output()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return r, nil
-}
-
-func matchString(str string, target string) bool {
-	r := regexp.MustCompile(fmt.Sprintf(`^(?i)%v$`, str))
-	return r.MatchString(target)
+	return string(r), nil
 }
