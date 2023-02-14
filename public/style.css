@@ -1,0 +1,14 @@
+.container {
+  margin: 1rem auto;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+.hide {
+  display: none;
+}
+
+#result {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
