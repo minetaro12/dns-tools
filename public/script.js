@@ -20,7 +20,7 @@ function submit(m) {
     fd.append("type", qType.value)
   }
 
-  fetch("/" + m + "/", {
+  fetch("/" + m, {
     method: "POST",
     body: fd
   })

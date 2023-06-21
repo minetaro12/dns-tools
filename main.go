@@ -20,9 +20,9 @@ func main() {
 
 	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8000"))
 	http.Handle("/", http.FileServer(http.FS(public)))
-	http.HandleFunc("/whois/", whoisHandle)
-	http.HandleFunc("/dig/", digHandle)
-	http.HandleFunc("/nslookup/", nslookupHandle)
+	http.HandleFunc("/whois", whoisHandle)
+	http.HandleFunc("/dig", digHandle)
+	http.HandleFunc("/nslookup", nslookupHandle)
 	log.Println("Server Listening on", httpListen)
 	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
 }
