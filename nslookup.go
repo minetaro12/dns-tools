@@ -9,7 +9,7 @@ import (
 func nslookupHandle(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
-		r, err := execNslookup(r.FormValue("dns"), r.FormValue("type"), r.FormValue("domain"))
+		r, err := execNslookup(r.FormValue("dns"), r.FormValue("type"), r.FormValue("fqdn"))
 		if err != nil {
 			errorResponse(w)
 			return
@@ -20,7 +20,7 @@ func nslookupHandle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func execNslookup(reqDns, reqType, domain string) (string, error) {
+func execNslookup(reqDns, reqType, fqdn string) (string, error) {
 	var nslDns, nslType string
 	if reqDns == "" {
 		nslDns = "8.8.8.8"
@@ -34,7 +34,7 @@ func execNslookup(reqDns, reqType, domain string) (string, error) {
 		nslType = reqType
 	}
 
-	r, err := exec.Command("nslookup", "-type="+nslType, domain, nslDns).Output()
+	r, err := exec.Command("nslookup", "-type="+nslType, fqdn, nslDns).Output()
 	if err != nil {
 		return "", err
 	}

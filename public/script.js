@@ -1,5 +1,5 @@
 const wDomain = document.querySelector("#wDomain")
-const qDomain = document.querySelector("#qDomain")
+const qFqdn = document.querySelector("#qFqdn")
 const qDns = document.querySelector("#qDns")
 const qType = document.querySelector("#qType")
 
@@ -15,7 +15,7 @@ function submit(m) {
   if(m == "whois") {
     fd.append("domain", wDomain.value)
   } else {
-    fd.append("domain", qDomain.value)
+    fd.append("fqdn", qFqdn.value)
     fd.append("dns", qDns.value)
     fd.append("type", qType.value)
   }
