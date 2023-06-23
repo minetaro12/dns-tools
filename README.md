@@ -2,7 +2,7 @@
 
 ```
 #ビルド
-$ cd ./web && yarn build
+$ cd ./web && yarn install && yarn build
 $ cd ..
 $ go build -o main
 

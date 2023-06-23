@@ -4,7 +4,7 @@ RUN apk add --no-cache yarn
 
 WORKDIR /work
 COPY . ./
-RUN cd ./web && yarn build && \
+RUN cd ./web && yarn install && yarn build && \
     cd .. && \
     CGO_ENABLED=0 go build -o main
 
