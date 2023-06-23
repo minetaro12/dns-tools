@@ -2,6 +2,8 @@
 
 ```
 #ビルド
+$ cd ./web && yarn build
+$ cd ..
 $ go build -o main
 
 #実行

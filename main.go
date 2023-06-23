@@ -9,11 +9,11 @@ import (
 	"os"
 )
 
-//go:embed public/*
+//go:embed web/build/*
 var static embed.FS
 
 func main() {
-	public, err := fs.Sub(static, "public")
+	public, err := fs.Sub(static, "web/build")
 	if err != nil {
 		log.Fatal(err)
 	}
