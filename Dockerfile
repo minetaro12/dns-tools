@@ -1,7 +1,7 @@
 FROM node:18-alpine3.18 AS web-builder
 WORKDIR /work
 COPY ./web/. ./
-RUN yarn install && yarn build
+RUN corepack enable && pnpm install && pnpm build
 
 FROM golang:1.20.5-alpine3.18 AS builder
 WORKDIR /work
