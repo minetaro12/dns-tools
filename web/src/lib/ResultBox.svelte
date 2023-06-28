@@ -22,7 +22,7 @@
   {/await}
 {/if}
 
-<style>
+<style lang="scss">
   pre {
     overflow-x: auto;
     overflow-y: hidden;
