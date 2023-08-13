@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dns-tools/handlers"
 	"embed"
 	"fmt"
 	"io/fs"
@@ -19,17 +20,15 @@ func main() {
 	}
 
 	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8000"))
+
 	http.Handle("/", http.FileServer(http.FS(public)))
-	http.HandleFunc("/whois", whoisHandle)
-	http.HandleFunc("/dig", digHandle)
-	http.HandleFunc("/nslookup", nslookupHandle)
+
+	http.HandleFunc("/whois", handlers.Whois)
+	http.HandleFunc("/dig", handlers.Dig)
+	http.HandleFunc("/nslookup", handlers.Nslookup)
+
 	log.Println("Server Listening on", httpListen)
 	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
-}
-
-func errorResponse(w http.ResponseWriter) {
-	w.WriteHeader(400)
-	w.Write([]byte(string("Invalid Request")))
 }
 
 func getEnv(key, fallback string) string {

@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"os/exec"
 )
 
-func nslookupHandle(w http.ResponseWriter, r *http.Request) {
+func Nslookup(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		r, err := execNslookup(r.FormValue("dns"), r.FormValue("type"), r.FormValue("fqdn"))
 		if err != nil {
-			errorResponse(w)
+			Error(w)
 			return
 		}
 		fmt.Fprint(w, r)
 	default:
-		errorResponse(w)
+		Error(w)
 	}
 }
 
