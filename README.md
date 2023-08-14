@@ -2,7 +2,7 @@
 
 ```
 #ビルド
-$ cd ./web && yarn install && yarn build
+$ cd ./web && pnpm i && pnpm build
 $ cd ..
 $ go build -o main
 
@@ -10,12 +10,4 @@ $ go build -o main
 $ ./main
 
 $ PORT=8080 ./main
-```
-
-## 使い方
-
-```
-$ curl localhost:8000/whois -X POST --form "domain=0sn.net"
-
-$ curl localhost:8000/dig -X POST --form "fqdn=example.com" --form "type=a" --form "dns=1.1.1.1"
 ```

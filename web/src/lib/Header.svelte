@@ -1,18 +1,15 @@
-<div class="Header">
-  <div class="Header-item">
-    <a href="/" class="Header-link">Whois</a>
-  </div>
-  <div class="Header-item Header-item--full">
-    <a href="/query" class="Header-link">Query</a>
-  </div>
-  <div class="Header-item">
-    <a
-      href="https://github.com/minetaro12/dns-tools"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="Header-link"
-    >
-      <i class="bi bi-github" />
-    </a>
-  </div>
-</div>
+<header class="text-white bg-gray-800 p-4 flex justify-between items-center">
+  <h1 class="text-2xl">
+    <a href="/">DNS Tools</a>
+  </h1>
+  <nav>
+    <ul class="flex">
+      <li>
+        <a href="/">Whois</a>
+      </li>
+      <li class="ml-2">
+        <a href="/query">Query</a>
+      </li>
+    </ul>
+  </nav>
+</header>
