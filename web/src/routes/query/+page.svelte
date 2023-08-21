@@ -28,6 +28,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>DNS Tools - Query</title>
+</svelte:head>
+
 <div class="border-2 border-gray-300 rounded mt-4 mx-auto max-w-[800px] p-4">
   <h2 class="text-xl">Query</h2>
   <div>
