@@ -11,6 +11,6 @@
   <h1 class="text-2xl">
     <a href="/">DNS Tools</a>
   </h1>
-  <input type="button" value="Menu" on:click={handle} class="bg-gray-800 border-2 border-gray-300 px-2 py-1 rounded hover:bg-gray-700" />
+  <input type="button" value="Menu" on:click={handle} class="bg-gray-800 border-2 border-gray-300 px-2 py-1 rounded cursor-pointer hover:bg-gray-700" />
   <Menu {isOpen} />
 </header>
