@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"encoding/json"
+	"dns-tools/lib"
 	"net/http"
 	"os/exec"
 )
@@ -13,29 +13,31 @@ type nslookupReq struct {
 }
 
 func Nslookup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Access-Control-Allow-Methods", "POST")
+	w.Header().Add("cache-control", "public, max-age=0, must-revalidate")
 
 	switch r.Method {
 	case "POST":
-		if !isValidReq(r) {
+		if !lib.IsValidRequest(r) {
 			http.Error(w, "Unsupported Media Type", http.StatusUnsupportedMediaType)
 			return
 		}
 
 		var t nslookupReq
-		if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
-			http.Error(w, "Invalid Request", http.StatusBadRequest)
+		if err := lib.JsonDecode(r.Body, &t); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		if r, err := execNslookup(t); err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, r, http.StatusInternalServerError)
 		} else {
 			w.Write([]byte(string(r)))
 		}
 
 	default:
-		http.Error(w, "Invalid Request", http.StatusBadRequest)
+		// POSTメソッド以外は受け付けない
+		w.Header().Add("allow", "POST")
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	}
 }
 
@@ -55,7 +57,7 @@ func execNslookup(t nslookupReq) (string, error) {
 
 	r, err := exec.Command("nslookup", "-type="+nslType, t.Fqdn, nslDns).Output()
 	if err != nil {
-		return "", err
+		return string(r), err
 	}
 	return string(r), nil
 }

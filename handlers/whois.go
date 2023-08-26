@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"dns-tools/lib"
 
 	"github.com/likexian/whois"
 )
@@ -12,32 +13,30 @@ type whoisReq struct {
 }
 
 func Whois(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Add("Access-Control-Allow-Origin", "*")
-	w.Header().Add("Access-Control-Allow-Methods", "POST")
-	// w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding")
+	w.Header().Add("cache-control", "public, max-age=0, must-revalidate")
 
 	switch r.Method {
 	case "POST":
-		if !isValidReq(r) {
+		if !lib.IsValidRequest(r) {
 			http.Error(w, "Unsupported Media Type", http.StatusUnsupportedMediaType)
 			return
 		}
 
 		var t whoisReq
-		if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
+		if err := lib.JsonDecode(r.Body, &t); err != nil {
 			http.Error(w, "Invalid Request", http.StatusBadRequest)
 			return
 		}
 
 		r, err := whois.Whois(t.Domain)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		w.Write([]byte(string(r)))
-	// case "OPTIONS":
-	// 	w.WriteHeader(http.StatusOK)
 	default:
-		http.Error(w, "Invalid Request", http.StatusBadRequest)
+		// POSTメソッド以外は受け付けない
+		w.Header().Add("allow", "POST")
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	}
 }
