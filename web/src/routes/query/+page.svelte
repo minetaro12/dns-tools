@@ -45,10 +45,11 @@
       <p>Wait...</p>
     {:then result}
       {#if result != null}
-        <pre class="text-xs overflow-auto">{result}</pre>
+        <pre class="text-sm overflow-x-auto">{result}</pre>
       {/if}
     {:catch error}
-      <p class="text-red-700">{error.message}</p>
+      <pre class="text-sm text-red-600 overflow-x-auto">Error</pre>
+      <pre class="text-sm text-red-600 overflow-x-auto">{error.message}</pre>
     {/await}
   </div>
 </div>
