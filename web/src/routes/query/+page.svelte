@@ -33,9 +33,9 @@
 </svelte:head>
 
 <div>
-  <Input bind:value={fqdn} placeholder="FQDN" />
-  <Input bind:value={dns} placeholder="8.8.8.8" />
-  <Input bind:value={type} placeholder="A" />
+  <Input bind:value={fqdn} {handle} placeholder="FQDN" />
+  <Input bind:value={dns} {handle} placeholder="8.8.8.8" />
+  <Input bind:value={type} {handle} placeholder="A" />
 </div>
 <Button {handle} />
 

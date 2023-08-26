@@ -33,7 +33,7 @@
 </svelte:head>
 
 <div>
-  <Input bind:value={domain} placeholder="Domain" />
+  <Input bind:value={domain} {handle} placeholder="Domain" />
 </div>
 <Button {handle} />
 
