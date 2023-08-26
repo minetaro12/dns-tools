@@ -1,11 +1,12 @@
 <script lang="ts">
   import Button from "$lib/Button.svelte";
   import Input from "$lib/Input.svelte";
+  import Select from "$lib/Select.svelte";
 
   let fqdn: string, type: string, dns: string;
 
   async function action() {
-    const res = await fetch("/nslookup", {
+    const res = await fetch("/lookup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +36,15 @@
 <div>
   <Input bind:value={fqdn} {handle} placeholder="FQDN" />
   <Input bind:value={dns} {handle} placeholder="8.8.8.8" />
-  <Input bind:value={type} {handle} placeholder="A" />
+  <Select bind:value={type}>
+    <option value="a">A</option>
+    <option value="aaaa">AAAA</option>
+    <option value="cname">CNAME</option>
+    <option value="mx">MX</option>
+    <option value="ns">NS</option>
+    <option value="txt">TXT</option>
+  </Select>
+  <!-- <Input bind:value={type} {handle} placeholder="A" /> -->
 </div>
 <Button {handle} />
 

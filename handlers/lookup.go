@@ -3,16 +3,15 @@ package handlers
 import (
 	"dns-tools/lib"
 	"net/http"
-	"os/exec"
 )
 
-type nslookupReq struct {
+type LookupReq struct {
 	Fqdn string `json:"fqdn"`
 	Dns  string `json:"dns"`
 	Type string `json:"type"`
 }
 
-func Nslookup(w http.ResponseWriter, r *http.Request) {
+func Lookup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("cache-control", "public, max-age=0, must-revalidate")
 
 	switch r.Method {
@@ -22,14 +21,14 @@ func Nslookup(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var t nslookupReq
+		var t LookupReq
 		if err := lib.JsonDecode(r.Body, &t); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		if r, err := execNslookup(t); err != nil {
-			http.Error(w, r, http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
 			w.Write([]byte(string(r)))
 		}
@@ -41,23 +40,20 @@ func Nslookup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func execNslookup(t nslookupReq) (string, error) {
-	var nslDns, nslType string
+func execNslookup(t LookupReq) (string, error) {
+	// 空ならば8.8.8.8を設定する
 	if t.Dns == "" {
-		nslDns = "8.8.8.8"
-	} else {
-		nslDns = t.Dns
+		t.Dns = "8.8.8.8"
 	}
 
+	// 空ならばAレコードに設定する
 	if t.Type == "" {
-		nslType = "A"
-	} else {
-		nslType = t.Type
+		t.Type = "A"
 	}
 
-	r, err := exec.Command("nslookup", "-type="+nslType, t.Fqdn, nslDns).Output()
+	r, err := lib.Resolve(t.Fqdn, t.Dns, t.Type)
 	if err != nil {
-		return string(r), err
+		return "", err
 	}
-	return string(r), nil
+	return r, nil
 }
