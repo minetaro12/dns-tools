@@ -2,9 +2,7 @@
 
 ```
 #ビルド
-$ cd ./web && pnpm i && pnpm build
-$ cd ..
-$ go build -o main
+$ make
 
 #実行
 $ ./main
