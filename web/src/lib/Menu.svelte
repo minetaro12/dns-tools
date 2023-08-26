@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores";
-
   let isOpen = false;
 </script>
 
@@ -16,12 +14,6 @@
   <nav>
     <ul class="[&>li]:m-2">
       <li>
-        <a class:now={$page.url.pathname == "/"} href="/">Whois</a>
-      </li>
-      <li>
-        <a class:now={$page.url.pathname == "/query/"} href="/query/">Query</a>
-      </li>
-      <li>
         <a href="https://api.0sn.net" target="_blank" rel="noopener noreferrer"
           >API Tools</a
         >
@@ -36,9 +28,3 @@
     </ul>
   </nav>
 </div>
-
-<style lang="scss">
-  .now {
-    color: royalblue;
-  }
-</style>
