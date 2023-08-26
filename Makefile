@@ -5,3 +5,6 @@ build:
 dev:
 	@cd web && pnpm i && pnpm build
 	@go run .
+
+web-dev:
+	@cd web && pnpm i && pnpm dev
