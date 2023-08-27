@@ -1,12 +1,12 @@
 <script>
   import Header from "$lib/Header.svelte";
-  import Tab from "$lib/Tab.svelte";
+  import Tabs from "$lib/Tabs.svelte";
   import "../app.scss";
 </script>
 
 <Header />
 <div class="mx-auto max-w-[800px]">
-  <Tab />
+  <Tabs />
   <div class="border-2 border-gray-300 rounded p-4">
     <slot />
   </div>
