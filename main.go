@@ -2,32 +2,27 @@ package main
 
 import (
 	"dns-tools/handlers"
-	"embed"
 	"fmt"
-	"io/fs"
 	"log"
-	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
-//go:embed web/build/*
-var static embed.FS
-
 func main() {
-	public, err := fs.Sub(static, "web/build")
+	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8000"))
+
+	gin.SetMode("release")
+	r := gin.Default()
+	r.Static("/", "./web/build")
+	r.POST("/whois", handlers.Whois)
+	r.POST("/lookup", handlers.Lookup)
+
+	log.Println("Server Listening on", httpListen)
+	err := r.Run(httpListen)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8000"))
-
-	http.Handle("/", http.FileServer(http.FS(public)))
-
-	http.HandleFunc("/whois", handlers.Whois)
-	http.HandleFunc("/lookup", handlers.Lookup)
-
-	log.Println("Server Listening on", httpListen)
-	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
 }
 
 func getEnv(key, fallback string) string {
@@ -35,11 +30,4 @@ func getEnv(key, fallback string) string {
 		return val
 	}
 	return fallback
-}
-
-func logRequest(handler http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
-		handler.ServeHTTP(w, r)
-	})
 }
