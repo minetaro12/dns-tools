@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let handle: any;
+  export let handle: EventListener;
 </script>
 
 <button
