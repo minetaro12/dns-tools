@@ -1,7 +1,9 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
+	"net/http"
+
+	"github.com/gofiber/fiber/v2"
 	"github.com/likexian/whois"
 )
 
@@ -9,28 +11,29 @@ type whoisRequest struct {
 	Domain string `json:"domain"`
 }
 
-func Whois(c *gin.Context) {
-	// 応答をキャッシュしないように
-	c.Header("cache-control", "public, max-age=0, must-revalidate")
+func Whois(c *fiber.Ctx) error {
+	// 応答をキャッシュしない
+	c.Set("cache-control", "public, max-age=0, must-revalidate")
 
-	var reqBody whoisRequest
+	reqBody := new(whoisRequest)
 
 	// JSONのパースに失敗した場合はエラー
-	if c.BindJSON(&reqBody) != nil {
-		c.Writer.WriteString("Invalid Request")
-		return
+	if err := c.BodyParser(reqBody); err != nil {
+		c.Status(http.StatusBadRequest)
+		c.SendString("Invalid Request")
+		return err
 	}
 
-	// whoisコマンドの実行
-	whoisResult, err := whois.Whois(reqBody.Domain)
+	// whoisの実行
+	result, err := whois.Whois(reqBody.Domain)
 
-	// whoisコマンドの実行に失敗した場合はエラー
+	// whoisの実行に失敗した場合はエラー
 	if err != nil {
-		c.Status(500)
-		c.Writer.WriteString(err.Error())
-		return
+		c.Status(http.StatusInternalServerError)
+		c.SendString(err.Error())
+		return err
 	}
 
-	// レスポンス
-	c.Writer.WriteString(whoisResult)
+	c.WriteString(result)
+	return nil
 }

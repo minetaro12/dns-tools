@@ -6,20 +6,19 @@ import (
 	"log"
 	"os"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
 	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8000"))
 
-	gin.SetMode("release")
-	r := gin.Default()
-	r.Static("/", "./web/build")
-	r.POST("/whois", handlers.Whois)
-	r.POST("/lookup", handlers.Lookup)
+	app := fiber.New()
 
-	log.Println("Server Listening on", httpListen)
-	err := r.Run(httpListen)
+	app.Static("/", "./web/build")
+	app.Post("/whois", handlers.Whois)
+	app.Post("/lookup", handlers.Lookup)
+
+	err := app.Listen(httpListen)
 	if err != nil {
 		log.Fatal(err)
 	}

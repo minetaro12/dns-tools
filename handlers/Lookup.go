@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"dns-tools/lib"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
 type lookupRequest struct {
@@ -12,30 +13,31 @@ type lookupRequest struct {
 	TYPE string `json:"type"`
 }
 
-func Lookup(c *gin.Context) {
+func Lookup(c *fiber.Ctx) error {
 	// 応答をキャッシュしないように
-	c.Header("cache-control", "public, max-age=0, must-revalidate")
+	c.Set("cache-control", "public, max-age=0, must-revalidate")
 
-	var reqBody lookupRequest
+	reqBody := new(lookupRequest)
 
 	// JSONのパースに失敗した場合はエラー
-	if c.BindJSON(&reqBody) != nil {
-		c.Writer.WriteString("Invalid Request")
-		return
+	if err := c.BodyParser(reqBody); err != nil {
+		c.Status(http.StatusBadRequest)
+		c.SendString("Invalid Request")
+		return err
 	}
 
 	// lookupの実行
-	lookupResult, err := execLookup(reqBody)
+	result, err := execLookup(*reqBody)
 
 	// lookupの実行に失敗した場合はエラー
 	if err != nil {
-		c.Status(500)
-		c.Writer.WriteString(err.Error())
-		return
+		c.Status(http.StatusInternalServerError)
+		c.SendString(err.Error())
+		return err
 	}
 
-	// レスポンス
-	c.Writer.WriteString(lookupResult)
+	c.WriteString(result)
+	return nil
 }
 
 func execLookup(t lookupRequest) (string, error) {
