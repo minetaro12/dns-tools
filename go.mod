@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.22.4
 
 require (
-	github.com/gofiber/fiber/v2 v2.52.4
+	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/likexian/whois v1.15.3
 	github.com/miekg/dns v1.1.61
 )
