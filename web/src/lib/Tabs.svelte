@@ -8,7 +8,7 @@
   ];
 </script>
 
-<div class="mt-4 ml-2">
+<div class="mt-4 ml-1">
   {#each items as item}
     <button
       class="p-2 mr-1 rounded-t hover:bg-gray-200"

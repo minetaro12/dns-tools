@@ -1,30 +1,37 @@
 <script lang="ts">
   let isOpen = false;
+
+  const close = (event: Event) => {
+    if (event.target === event.currentTarget) {
+      isOpen = false;
+    }
+  };
 </script>
 
 <button
   on:click={() => (isOpen = !isOpen)}
-  class="bg-gray-800 border-2 border-gray-300 px-2 py-1 rounded hover:bg-gray-700"
+  class="bg-gray-700 border-gray-300 px-3 py-2 rounded hover:bg-gray-500"
   >Menu</button
 >
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   class:hidden={!isOpen}
-  class="fixed top-14 right-4 bg-white text-black border-2 border-gray-300y px-3 py-2 rounded"
+  class="fixed flex flex-row-reverse w-full h-full bg-black bg-opacity-30 top-0 left-0"
+  on:click={close}
 >
-  <nav>
-    <ul class="[&>li]:m-2">
-      <li>
-        <a href="https://api.0sn.net" target="_blank" rel="noopener noreferrer"
-          >API Tools</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/minetaro12/dns-tools"
-          target="_blank"
-          rel="noopener noreferrer">GitHub</a
-        >
-      </li>
-    </ul>
-  </nav>
+  <div class="flex flex-col bg-gray-700 py-10 font-semibold text-xl shadow-2xl">
+    <a
+      href="https://api.0sn.net"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="px-7 py-3 hover:bg-gray-500">API Tools</a
+    >
+    <a
+      href="https://github.com/minetaro12/dns-tools"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="px-7 py-3 hover:bg-gray-500">GitHub</a
+    >
+  </div>
 </div>
