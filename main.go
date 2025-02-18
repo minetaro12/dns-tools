@@ -1,7 +1,6 @@
 package main
 
 import (
-	"dns-tools/handlers"
 	"embed"
 	"fmt"
 	"log"
@@ -10,25 +9,23 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/minetaro12/dns-tools/internal/routes"
 )
 
-//go:embed web/build/*
+//go:embed web/dist/*
 var embedFs embed.FS
 
 func main() {
-	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8000"))
+	httpListen := fmt.Sprintf(":%v", getEnv("PORT", "8080"))
 
 	app := fiber.New()
 
-	// app.Static("/", "./web/build")
 	app.Use("/", filesystem.New(filesystem.Config{
 		Root:       http.FS(embedFs),
-		PathPrefix: "web/build",
+		PathPrefix: "web/dist",
 		Browse:     false,
 	}))
-	app.Post("/whois", handlers.Whois)
-	app.Post("/lookup", handlers.Lookup)
-
+	routes.SetupRoutes(app)
 	err := app.Listen(httpListen)
 	if err != nil {
 		log.Fatal(err)

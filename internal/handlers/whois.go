@@ -5,27 +5,26 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/likexian/whois"
+	"github.com/minetaro12/dns-tools/internal/models"
 )
 
-type whoisRequest struct {
-	Domain string `json:"domain"`
-}
-
-func Whois(c *fiber.Ctx) error {
+func PostWhois(c *fiber.Ctx) error {
 	// 応答をキャッシュしない
 	c.Set("cache-control", "public, max-age=0, must-revalidate")
 
-	reqBody := new(whoisRequest)
+	req := new(models.Whios)
 
 	// JSONのパースに失敗した場合はエラー
-	if err := c.BodyParser(reqBody); err != nil {
+	if err := c.BodyParser(req); err != nil {
 		c.Status(http.StatusBadRequest)
-		c.SendString("Invalid Request")
+		c.JSON(fiber.Map{
+			"message": "Invalid JSON",
+		})
 		return err
 	}
 
 	// whoisの実行
-	result, err := whois.Whois(reqBody.Domain)
+	result, err := whois.Whois(req.Domain)
 
 	// whoisの実行に失敗した場合はエラー
 	if err != nil {
