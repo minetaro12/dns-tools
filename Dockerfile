@@ -1,7 +1,7 @@
 FROM node:20-bookworm-slim AS web-builder
 WORKDIR /work
 COPY ./web/. ./
-RUN corepack enable && pnpm install && pnpm build
+RUN npm install -g pnpm@latest && pnpm install && pnpm build
 
 FROM golang:1.24.0-alpine3.21 AS builder
 WORKDIR /work
