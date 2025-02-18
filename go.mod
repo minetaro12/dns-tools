@@ -1,4 +1,4 @@
-module dns-tools
+module github.com/minetaro12/dns-tools
 
 go 1.24.0
 
