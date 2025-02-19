@@ -17,9 +17,13 @@ function changeMode() {
   <Header />
   <main>
     <input type="text" placeholder="Domain name" v-model="domain" />
-    <div class="mode" v-on:click="changeMode">
-      <div :class="{ active: mode === 'whois' }">Whois情報</div>
-      <div :class="{ active: mode === 'lookup' }">DNS検索</div>
+    <div class="mode">
+      <div :class="{ active: mode === 'whois' }" v-on:click="mode = 'whois'">
+        Whois情報
+      </div>
+      <div :class="{ active: mode === 'lookup' }" v-on:click="mode = 'lookup'">
+        DNS検索
+      </div>
     </div>
     <div class="child" v-show="mode === 'whois'">
       <Whois :domain="domain" />
@@ -40,7 +44,6 @@ input {
   align-items: center;
   background-color: lightgray;
   border-radius: 5px;
-  cursor: pointer;
   display: flex;
   gap: 1rem;
   margin: 1rem 0;
@@ -49,6 +52,7 @@ input {
 
   div {
     border-radius: 5px;
+    cursor: pointer;
     flex: 1;
     text-align: center;
     line-height: 1.4;
