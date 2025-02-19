@@ -22,7 +22,7 @@ function changeMode() {
       <div :class="{ active: mode === 'lookup' }">DNS検索</div>
     </div>
     <div class="child" v-show="mode === 'whois'">
-      <Whois :domain="domain" ref="whoisRef" />
+      <Whois :domain="domain" />
     </div>
     <div class="child" v-show="mode === 'lookup'">
       <Lookup :domain="domain" />
