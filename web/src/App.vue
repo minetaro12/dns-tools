@@ -8,9 +8,6 @@ import Whois from "./components/Whois.vue";
 const domain = ref("");
 const mode = ref<"whois" | "lookup">("whois");
 
-function changeMode() {
-  mode.value = mode.value === "whois" ? "lookup" : "whois";
-}
 </script>
 
 <template>
