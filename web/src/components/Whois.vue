@@ -22,7 +22,7 @@ async function fetchData() {
     domain: props.domain,
   };
 
-  const res = await fetch("/api/whois", {
+  const res = await fetch("./api/whois", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

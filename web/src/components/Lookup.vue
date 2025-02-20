@@ -26,7 +26,7 @@ async function fetchData() {
     type: type.value,
   };
 
-  const res = await fetch("/api/lookup", {
+  const res = await fetch("./api/lookup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
