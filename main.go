@@ -9,6 +9,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/minetaro12/dns-tools/internal/routes"
 )
 
@@ -20,6 +21,7 @@ func main() {
 
 	app := fiber.New()
 
+	app.Use(logger.New())
 	app.Use("/", filesystem.New(filesystem.Config{
 		Root:       http.FS(embedFs),
 		PathPrefix: "web/dist",
