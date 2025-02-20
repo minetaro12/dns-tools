@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef } from "vue";
+import { ref } from "vue";
 import Header from "./components/Header.vue";
 import "./styles/global.css";
 import Lookup from "./components/Lookup.vue";
@@ -7,7 +7,6 @@ import Whois from "./components/Whois.vue";
 
 const domain = ref("");
 const mode = ref<"whois" | "lookup">("whois");
-
 </script>
 
 <template>
