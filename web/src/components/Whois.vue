@@ -48,6 +48,10 @@ async function fetchData() {
 <style scoped>
 button {
   padding: 10px 20px;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
 }
 
 pre {

@@ -69,6 +69,10 @@ pre {
 .input-group {
   display: flex;
   gap: 10px;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
 }
 
 input,
