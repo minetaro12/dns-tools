@@ -7,6 +7,10 @@ interface Props {
   domain: string;
 }
 
+defineExpose({
+  fetchData,
+});
+
 const result = ref("");
 const type = ref("a");
 const dns = ref("");

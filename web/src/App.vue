@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import Header from "./components/Header.vue";
 import "./styles/global.css";
 import Lookup from "./components/Lookup.vue";
@@ -7,12 +7,31 @@ import Whois from "./components/Whois.vue";
 
 const domain = ref("");
 const mode = ref<"whois" | "lookup">("whois");
+const whoisRef = useTemplateRef("whoisRef");
+const lookupRef = useTemplateRef("lookupRef");
+
+// エンターキー押下時の処理
+function handleKeyDown(e: KeyboardEvent) {
+  if (e.key === "Enter") {
+    if (mode.value === "whois") {
+      whoisRef.value?.fetchData();
+    } else {
+      lookupRef.value?.fetchData();
+    }
+  }
+}
 </script>
 
 <template>
   <Header />
   <main>
-    <input type="text" placeholder="Domain name" v-model="domain" />
+    <input
+      type="text"
+      placeholder="Domain name"
+      v-model="domain"
+      v-on:keydown="handleKeyDown"
+      autofocus
+    />
     <div class="mode">
       <div :class="{ active: mode === 'whois' }" v-on:click="mode = 'whois'">
         Whois情報
@@ -22,10 +41,10 @@ const mode = ref<"whois" | "lookup">("whois");
       </div>
     </div>
     <div class="child" v-show="mode === 'whois'">
-      <Whois :domain="domain" />
+      <Whois :domain="domain" ref="whoisRef" />
     </div>
     <div class="child" v-show="mode === 'lookup'">
-      <Lookup :domain="domain" />
+      <Lookup :domain="domain" ref="lookupRef" />
     </div>
   </main>
 </template>
