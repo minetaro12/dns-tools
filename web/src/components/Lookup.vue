@@ -55,7 +55,6 @@ async function fetchData() {
       <option value="txt">TXT</option>
     </select>
     <input type="text" v-model="dns" placeholder="8.8.8.8" />
-    <button @click="fetchData">検索</button>
   </div>
   <pre>{{ result }}</pre>
 </template>
@@ -78,8 +77,5 @@ pre {
 input,
 select {
   padding: 10px;
-}
-button {
-  padding: 10px 20px;
 }
 </style>

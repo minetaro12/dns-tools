@@ -41,19 +41,10 @@ async function fetchData() {
 </script>
 
 <template>
-  <button @click="fetchData">検索</button>
   <pre>{{ result }}</pre>
 </template>
 
 <style scoped>
-button {
-  padding: 10px 20px;
-
-  @media screen and (max-width: 600px) {
-    width: 100%;
-  }
-}
-
 pre {
   overflow-x: auto;
   padding: 5px;
