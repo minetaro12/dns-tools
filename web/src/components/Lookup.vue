@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Lookup } from "@/types/lookup";
+import axios from "axios";
 import { ref } from "vue";
 const props = defineProps<Props>();
 
@@ -12,17 +13,21 @@ defineExpose({
 });
 
 const result = ref("");
-const type = ref("a");
-const dns = ref("");
+const isLoading = ref(false);
+const errorMsg = ref("");
+const type = ref("A");
+const dns = ref("8.8.8.8");
 
-async function fetchData() {
+function fetchData() {
+  isLoading.value = true;
+  result.value = "";
+  errorMsg.value = "";
+
   if (!props.domain) {
-    result.value = "ドメイン名を入力してください";
+    errorMsg.value = "ドメイン名を入力してください";
+    isLoading.value = false;
     return;
   }
-
-  // 読み込み表示
-  result.value = "Processing...";
 
   const body: Lookup = {
     fqdn: props.domain,
@@ -30,33 +35,40 @@ async function fetchData() {
     type: type.value,
   };
 
-  const res = await fetch("./api/lookup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-
-  if (!res.ok) {
-    result.value = "Error fetching data";
-  } else [(result.value = await res.text())];
+  axios
+    .post("./api/lookup", body)
+    .then((res) => {
+      result.value = res.data;
+    })
+    .catch((err) => {
+      errorMsg.value = err.response.data;
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
 }
 </script>
 
 <template>
-  <div class="input-group">
-    <select v-model="type">
-      <option value="a">A</option>
-      <option value="aaaa">AAAA</option>
-      <option value="cname">CNAME</option>
-      <option value="mx">MX</option>
-      <option value="ns">NS</option>
-      <option value="txt">TXT</option>
-    </select>
-    <input type="text" v-model="dns" placeholder="8.8.8.8" />
-  </div>
-  <pre>{{ result }}</pre>
+  <v-row class="mt-0">
+    <v-col cols="4">
+      <v-select
+        v-model="type"
+        :items="['A', 'AAAA', 'CNAME', 'MX', 'NS', 'TXT']"
+        label="Type"
+      />
+    </v-col>
+    <v-col cols="8">
+      <v-text-field label="DNS" v-model="dns" placeholder="8.8.8.8" clearable />
+    </v-col>
+  </v-row>
+  <v-alert type="error" :text="errorMsg" v-if="errorMsg != ''" />
+  <v-progress-linear indeterminate v-if="isLoading" />
+  <v-card variant="tonal">
+    <pre class="pa-3 overflow-x-auto text-body-2" v-if="result">{{
+      result
+    }}</pre>
+  </v-card>
 </template>
 
 <style scoped>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Whois } from "@/types/whois";
+import axios from "axios";
 import { ref } from "vue";
 const props = defineProps<Props>();
 
@@ -12,41 +13,46 @@ defineExpose({
 });
 
 const result = ref("");
+const isLoading = ref(false);
+const errorMsg = ref("");
 
-async function fetchData() {
+function fetchData() {
+  isLoading.value = true;
+  result.value = "";
+  errorMsg.value = "";
+
   if (!props.domain) {
-    result.value = "ドメイン名を入力してください";
+    errorMsg.value = "ドメイン名を入力してください";
+    isLoading.value = false;
     return;
   }
-
-  // 読み込み表示
-  result.value = "Processing...";
 
   const body: Whois = {
     domain: props.domain,
   };
 
-  const res = await fetch("./api/whois", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-
-  if (!res.ok) {
-    result.value = "Error fetching data";
-  } else [(result.value = await res.text())];
+  axios
+    .post("./api/whois", body)
+    .then((res) => {
+      result.value = res.data;
+    })
+    .catch((err) => {
+      errorMsg.value = err.response.data;
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
 }
 </script>
 
 <template>
-  <pre>{{ result }}</pre>
+  <v-alert type="error" class="mt-2" :text="errorMsg" v-if="errorMsg != ''" />
+  <v-progress-linear indeterminate class="mt-2" v-if="isLoading" />
+  <v-card variant="tonal" class="mt-2">
+    <pre class="pa-3 overflow-x-auto text-body-2" v-if="result">{{
+      result
+    }}</pre>
+  </v-card>
 </template>
 
-<style scoped>
-pre {
-  overflow-x: auto;
-  padding: 5px;
-}
-</style>
+<style scoped></style>

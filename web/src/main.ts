@@ -1,8 +1,19 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
 
-const app = createApp(App)
+// Vuetify
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
 
-// app.use(router)
+const vuetify = createVuetify({
+  icons: {
+    defaultSet: "mdi",
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
+});
 
-app.mount('#app')
+createApp(App).use(vuetify).mount("#app");

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from "vue";
 import Header from "./components/Header.vue";
-import "./styles/global.css";
-import Lookup from "./components/Lookup.vue";
+import { mdiGithub, mdiMagnify } from "@mdi/js";
 import Whois from "./components/Whois.vue";
+import Lookup from "./components/Lookup.vue";
 
 const domain = ref("");
 const mode = ref<"whois" | "lookup">("whois");
@@ -28,71 +28,48 @@ function handleSubmit() {
 </script>
 
 <template>
-  <Header />
-  <main>
-    <div class="input-group">
-      <input
-        type="text"
-        placeholder="Domain name"
-        v-model="domain"
-        v-on:keydown="handleKeyDown"
-        autofocus
-      />
-      <button v-on:click="handleSubmit">検索</button>
-    </div>
-    <div class="mode">
-      <div :class="{ active: mode === 'whois' }" v-on:click="mode = 'whois'">
-        Whois情報
-      </div>
-      <div :class="{ active: mode === 'lookup' }" v-on:click="mode = 'lookup'">
-        DNS検索
-      </div>
-    </div>
-    <div class="child" v-show="mode === 'whois'">
-      <Whois :domain="domain" ref="whoisRef" />
-    </div>
-    <div class="child" v-show="mode === 'lookup'">
-      <Lookup :domain="domain" ref="lookupRef" />
-    </div>
-  </main>
+  <v-app>
+    <Header />
+    <v-main>
+      <v-container max-width="800px">
+        <v-text-field
+          label="Domain name"
+          v-model="domain"
+          placeholder="example.com"
+          @keydown="handleKeyDown"
+          autofocus
+          clearable
+        >
+          <template v-slot:append>
+            <v-btn
+              color="indigo"
+              @click="handleSubmit"
+              :prepend-icon="mdiMagnify"
+            >
+              検索
+            </v-btn>
+          </template>
+        </v-text-field>
+
+        <v-tabs v-model="mode" color="indigo">
+          <v-tab value="whois">Whois情報</v-tab>
+          <v-tab value="lookup">DNS検索</v-tab>
+        </v-tabs>
+        <div v-show="mode === 'whois'">
+          <Whois :domain="domain" ref="whoisRef" />
+        </div>
+        <div v-show="mode === 'lookup'">
+          <Lookup :domain="domain" ref="lookupRef" />
+        </div>
+      </v-container>
+    </v-main>
+    <v-fab
+      :icon="mdiGithub"
+      href="https://github.com/minetaro12/dns-tools"
+      color="indigo"
+      class="position-fixed bottom-0 right-0 mb-8 mr-8"
+    />
+  </v-app>
 </template>
 
-<style scoped>
-.input-group {
-  display: flex;
-  gap: 10px;
-
-  button {
-    width: 80px;
-  }
-}
-
-input {
-  padding: 0.5rem;
-  width: 100%;
-}
-
-.mode {
-  align-items: center;
-  background-color: lightgray;
-  border-radius: 5px;
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  padding: 5px;
-  user-select: none;
-
-  div {
-    border-radius: 5px;
-    cursor: pointer;
-    flex: 1;
-    text-align: center;
-    line-height: 1.4;
-    padding: 5px;
-  }
-
-  div.active {
-    background-color: white;
-  }
-}
-</style>
+<style scoped></style>
