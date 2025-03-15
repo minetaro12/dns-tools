@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref, useTemplateRef } from "vue";
+import { onMounted, ref, useTemplateRef, watch } from "vue";
 import Header from "./components/Header.vue";
 import { mdiGithub, mdiMagnify } from "@mdi/js";
 import Whois from "./components/Whois.vue";
 import Lookup from "./components/Lookup.vue";
+import { useTheme } from "vuetify";
 
 const domain = ref("");
 const mode = ref<"whois" | "lookup">("whois");
 const whoisRef = useTemplateRef("whoisRef");
 const lookupRef = useTemplateRef("lookupRef");
+const isDark = ref(window.matchMedia("(prefers-color-scheme: dark)").matches);
+const theme = useTheme();
 
 // エンターキー押下時の処理
 function handleKeyDown(e: KeyboardEvent) {
@@ -25,11 +28,25 @@ function handleSubmit() {
     lookupRef.value?.fetchData();
   }
 }
+
+// ダークモードになっている場合はテーマを変更
+onMounted(() => {
+  if (isDark.value) {
+    theme.global.name.value = "dark";
+  }
+});
+
+// isDarkの値が変更されたらテーマを変更
+watch(isDark, (value) => {
+  value
+    ? (theme.global.name.value = "dark")
+    : (theme.global.name.value = "light");
+});
 </script>
 
 <template>
   <v-app>
-    <Header />
+    <Header v-model="isDark" />
     <v-main>
       <v-container max-width="800px">
         <v-text-field
