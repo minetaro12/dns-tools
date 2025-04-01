@@ -11,7 +11,8 @@ const isDark = defineModel();
     <v-app-bar-title>DNS Tools </v-app-bar-title>
     <v-switch
       v-model="isDark"
-      :prepend-icon="isDark ? mdiWeatherNight : mdiWeatherSunny"
+      :true-icon="mdiWeatherNight"
+      :false-icon="mdiWeatherSunny"
       hide-details
       inset
       class="mr-4"
