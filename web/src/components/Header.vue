@@ -2,7 +2,6 @@
 import { mdiWeatherSunny, mdiWeatherNight } from "@mdi/js";
 import { useTheme } from "vuetify";
 
-const theme = useTheme();
 const isDark = defineModel();
 </script>
 
