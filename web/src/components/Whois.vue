@@ -3,6 +3,7 @@ import type { Whois } from "@/types/whois";
 import axios from "axios";
 import { ref } from "vue";
 const props = defineProps<Props>();
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Props {
   domain: string;
@@ -32,7 +33,7 @@ function fetchData() {
   };
 
   axios
-    .post("./api/whois", body)
+    .post(`${API_URL}/api/whois`, body)
     .then((res) => {
       result.value = res.data;
     })

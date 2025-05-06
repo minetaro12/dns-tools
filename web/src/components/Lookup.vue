@@ -3,6 +3,7 @@ import type { Lookup } from "@/types/lookup";
 import axios from "axios";
 import { ref } from "vue";
 const props = defineProps<Props>();
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface Props {
   domain: string;
@@ -36,7 +37,7 @@ function fetchData() {
   };
 
   axios
-    .post("./api/lookup", body)
+    .post(`${API_URL}/api/lookup`, body)
     .then((res) => {
       result.value = res.data;
     })
