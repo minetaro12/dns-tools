@@ -49,20 +49,10 @@ watch(isDark, (value) => {
     <Header v-model="isDark" />
     <v-main>
       <v-container max-width="800px">
-        <v-text-field
-          label="Domain name"
-          v-model="domain"
-          placeholder="example.com"
-          @keydown="handleKeyDown"
-          autofocus
-          clearable
-        >
+        <v-text-field label="Domain name" v-model="domain" placeholder="example.com" @keydown="handleKeyDown" autofocus
+          clearable>
           <template v-slot:append>
-            <v-btn
-              color="indigo"
-              @click="handleSubmit"
-              :prepend-icon="mdiMagnify"
-            >
+            <v-btn color="indigo" @click="handleSubmit" :prepend-icon="mdiMagnify">
               検索
             </v-btn>
           </template>
@@ -80,12 +70,8 @@ watch(isDark, (value) => {
         </div>
       </v-container>
     </v-main>
-    <v-fab
-      :icon="mdiGithub"
-      href="https://github.com/minetaro12/dns-tools"
-      color="indigo"
-      class="position-fixed bottom-0 right-0 mb-8 mr-8"
-    />
+    <v-fab :icon="mdiGithub" href="https://github.com/minetaro12/dns-tools" color="indigo"
+      class="position-fixed bottom-0 right-0 mb-8 mr-8" />
   </v-app>
 </template>
 

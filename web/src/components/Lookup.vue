@@ -52,11 +52,7 @@ function fetchData() {
 <template>
   <v-row class="mt-0">
     <v-col cols="4">
-      <v-select
-        v-model="type"
-        :items="['A', 'AAAA', 'CNAME', 'MX', 'NS', 'TXT']"
-        label="Type"
-      />
+      <v-select v-model="type" :items="['A', 'AAAA', 'CNAME', 'MX', 'NS', 'TXT']" label="Type" />
     </v-col>
     <v-col cols="8">
       <v-text-field label="DNS" v-model="dns" placeholder="8.8.8.8" clearable />
