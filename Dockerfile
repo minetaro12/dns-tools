@@ -1,9 +1,9 @@
-FROM node:20-bookworm-slim AS web-builder
+FROM node:24-bookworm-slim AS web-builder
 WORKDIR /work
 COPY ./web/. ./
-RUN npm install -g pnpm@latest && pnpm install && pnpm build
+RUN corepack enable pnpm && pnpm install && pnpm run build
 
-FROM golang:1.24.0-alpine3.21 AS builder
+FROM golang:1.26.4-alpine3.23 AS builder
 WORKDIR /work
 COPY . ./
 COPY --from=web-builder /work/dist /work/web/dist
